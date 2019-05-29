@@ -1,9 +1,14 @@
 .leftbox{
     float: left;
     width: 250px;
-    height: auto;
+    height: 200px;
     margin: 5px;
     border: 3px solid navy;
+}
+#leftbox1{
+ 
+    border: 3px solid green;
+    
 }
 
 #rightbox{
@@ -16,6 +21,9 @@
 
 .boxImage{
     float: left;
+    height: 150px;
+    width: 150px;
     margin: 5px;
     border: 2px solid blue;
 }
+
