@@ -1,0 +1,21 @@
+.leftbox{
+    float: left;
+    width: 250px;
+    height: auto;
+    margin: 5px;
+    border: 3px solid navy;
+}
+
+#rightbox{
+    float: left;
+    width: 250px;
+    height: auto;
+    margin: 5px;
+    border: 3px solid orangered;
+}
+
+.boxImage{
+    float: left;
+    margin: 5px;
+    border: 2px solid blue;
+}
