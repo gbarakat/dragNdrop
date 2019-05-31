@@ -1,5 +1,6 @@
 //----------------------------------Timer Handling Function---------------------//
-(function timerHandler(){
+function doFirst(){
+    (function timerHandler(){
     const SECONDHAND = document.getElementById("second");
     const Clockbg = document.getElementById("circle")
     const stpIntrvalBtn = document.getElementById("stpInterval")
@@ -10,7 +11,7 @@
     let click= 0;
 
     function runTheClock() {
-        console.log(click);
+        //console.log(click);
         if(!stopInterval || click == 0)
         {
             secPosition = secPosition+6;
@@ -51,17 +52,17 @@
     } 
 })();
 
-function doFirst(){
-    var submitBtn = document.getElementById("submitBtn");
+(function dragAndDrop(){
+   
     var currentObject ;
     // the image stock array will be responsible for rendering images on the document
     var imageStock=[
-        {image1:"./images/css.png",image2:"./images/html.png",image3:"./images/js.png",image4:"./images/react.png"},
+        {image1:"./images/django-wrong.png",image2:"./images/html.png",image3:"./images/js.png",image4:"./images/css.png"},
         {image1:"./images/react.png",image2:"./images/js.png",image3:"./images/css.png",image4:"./images/html.png"},
         {image1:"./images/js.png",image2:"./images/react.png",image3:"./images/html.png",image4:"./images/css.png"},
         {image1:"./images/html.png",image2:"./images/css.png",image3:"./images/react.png",image4:"./images/js.png"}
 ]
-        var ix=0;
+    var ix=0;
     // this function render the images from imageStock array to the document
         function setCodeSrc(ix){
             document.getElementById("boxImage1").src= imageStock[ix].image1;
@@ -71,7 +72,7 @@ function doFirst(){
         }
         
         setCodeSrc(ix)    
-        submitBtn.addEventListener("click", nxtImages,false)
+        
     // this function is responsible for updating the images of the document
     // by changing the value of ix 
         function nxtImages(e){
@@ -83,23 +84,26 @@ function doFirst(){
             }
         }
     //--------------------------the Drag and drop events and methods--------------------//
-    var boxImage = document.getElementsByClassName("boxImage")
+    var boxImage = document.getElementsByClassName("boxImage");
+    var leftbox = document.getElementsByClassName('leftbox'); 
+    var submitBtn = document.getElementById("submitBtn");
+    var selectedImages= []
     for(var i =0; i< boxImage.length; i++){
         boxImage[i].addEventListener("dragstart", startDrag , false);    
     }
-    var leftbox = document.getElementsByClassName('leftbox'); 
+    
 
     for(var i = 0; i< leftbox.length; i++){
             
             leftbox[i].addEventListener("dragenter",function(e){
-                    e.preventDefault(); 
-                      e.target.style.backgroundColor="white";
+                        e.preventDefault(); 
+                        e.target.style.backgroundColor="white";
                     },
                 false
             );
     
             leftbox[i].addEventListener("dragover", function(e){
-                    e.preventDefault();
+                        e.preventDefault();
                         e.target.style.backgroundColor="gray";
                     },
                 false
@@ -113,19 +117,44 @@ function doFirst(){
                 );
             
             leftbox[i].addEventListener('drop',dropped, false);
+        
    }
 
     function startDrag(e){
         currentObject = e.target;
         }
-
+       
     function dropped(evt){
+        evt.target.style.backgroundColor="white";
         evt.preventDefault();
         for(var i =0; i<leftbox.length; i++){
-                evt.target.innerHTML = " ";
-                evt.target.append(currentObject);
-                currentObject.removeEventListener("dragstart", startDrag, false);    
-                    }
-                }
+                
+            evt.target.innerHTML = " ";
+            evt.target.append(currentObject);
+            var subtString = currentObject.src.substr(29);
+            selectedImages.push(subtString);
+            //console.log("selectedImages are: "+selectedImages)
+            currentObject.removeEventListener("dragstart", startDrag, false);  
+        }    
     }
+    submitBtn.addEventListener("click",checkAnswer,false)
+    function checkAnswer(){   
+          
+                
+                for(var j=0; j<selectedImages.length; j++){
+                        var n = selectedImages[j].endsWith("-wrong.png");
+                    
+                        if(n){
+                            console.log("wrong Image captured");
+                        }else if(!n){
+                            
+                            console.log(selectedImages);
+                            console.log("the else if statement");
+                        }else{
+                            console.log("the else statement");
+                        }
+                    }       
+            }
+    })();
+}
 window.addEventListener("load", doFirst , false);
