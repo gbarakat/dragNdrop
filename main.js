@@ -1,3 +1,4 @@
+//----------------------------------Timer Handling Function---------------------//
 (function timerHandler(){
     const SECONDHAND = document.getElementById("second");
     const Clockbg = document.getElementById("circle")
@@ -51,7 +52,37 @@
 })();
 
 function doFirst(){
+    var submitBtn = document.getElementById("submitBtn");
     var currentObject ;
+    // the image stock array will be responsible for rendering images on the document
+    var imageStock=[
+        {image1:"./images/css.png",image2:"./images/html.png",image3:"./images/js.png",image4:"./images/react.png"},
+        {image1:"./images/react.png",image2:"./images/js.png",image3:"./images/css.png",image4:"./images/html.png"},
+        {image1:"./images/js.png",image2:"./images/react.png",image3:"./images/html.png",image4:"./images/css.png"},
+        {image1:"./images/html.png",image2:"./images/css.png",image3:"./images/react.png",image4:"./images/js.png"}
+]
+        var ix=0;
+    // this function render the images from imageStock array to the document
+        function setCodeSrc(ix){
+            document.getElementById("boxImage1").src= imageStock[ix].image1;
+            document.getElementById("boxImage2").src= imageStock[ix].image2;
+            document.getElementById("boxImage3").src= imageStock[ix].image3;
+            document.getElementById("boxImage4").src= imageStock[ix].image4;
+        }
+        
+        setCodeSrc(ix)    
+        submitBtn.addEventListener("click", nxtImages,false)
+    // this function is responsible for updating the images of the document
+    // by changing the value of ix 
+        function nxtImages(e){
+            if(ix<3){
+                ix++;
+                setCodeSrc(ix);
+              }else{
+                ix=0;
+            }
+        }
+    //--------------------------the Drag and drop events and methods--------------------//
     var boxImage = document.getElementsByClassName("boxImage")
     for(var i =0; i< boxImage.length; i++){
         boxImage[i].addEventListener("dragstart", startDrag , false);    
