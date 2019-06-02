@@ -57,11 +57,36 @@ function doFirst(){
     var currentObject ;
     // the image stock array will be responsible for rendering images on the document
     var imageStock=[
-        {image1:"./images/django-wrong.png",image2:"./images/html.png",image3:"./images/js.png",image4:"./images/css.png"},
-        {image1:"./images/react.png",image2:"./images/js.png",image3:"./images/css.png",image4:"./images/html.png"},
-        {image1:"./images/js.png",image2:"./images/react.png",image3:"./images/html.png",image4:"./images/css.png"},
-        {image1:"./images/html.png",image2:"./images/css.png",image3:"./images/react.png",image4:"./images/js.png"}
-]
+        {image1:"./images/django-wrong.png",
+        image2:"./images/html.png",
+        image3:"./images/js.png",
+        image4:"./images/css.png",
+        image5:"./images/react.png",
+        image6:"./images/sass.png",
+        image7:"./images/node.png",
+        image8:"./images/angular.png"
+    },
+    {image1:"./images/django-wrong.png",
+    image2:"./images/html.png",
+    image3:"./images/js.png",
+    image4:"./images/css.png",
+    image5:"./images/react.png",
+    image6:"./images/sass.png",
+    image7:"./images/node.png",
+    image8:"./images/angular.png"
+    },
+    {image1:"./images/django-wrong.png",
+    image2:"./images/html.png",
+    image3:"./images/js.png",
+    image4:"./images/css.png",
+    image5:"./images/react.png",
+    image6:"./images/sass.png",
+    image7:"./images/node.png",
+    image8:"./images/angular.png"
+    }  
+    
+
+    ]
     var ix=0;
     // this function render the images from imageStock array to the document
         function setCodeSrc(ix){
@@ -69,6 +94,10 @@ function doFirst(){
             document.getElementById("boxImage2").src= imageStock[ix].image2;
             document.getElementById("boxImage3").src= imageStock[ix].image3;
             document.getElementById("boxImage4").src= imageStock[ix].image4;
+            document.getElementById("boxImage5").src= imageStock[ix].image5;
+            document.getElementById("boxImage6").src= imageStock[ix].image6;
+            document.getElementById("boxImage7").src= imageStock[ix].image7;
+            document.getElementById("boxImage8").src= imageStock[ix].image8;
         }
         
         setCodeSrc(ix)    
@@ -76,6 +105,7 @@ function doFirst(){
     // this function is responsible for updating the images of the document
     // by changing the value of ix 
         function nxtImages(e){
+            //console.log(ix);
             if(ix<3){
                 ix++;
                 setCodeSrc(ix);
@@ -85,6 +115,7 @@ function doFirst(){
         }
     //--------------------------the Drag and drop events and methods--------------------//
     var boxImage = document.getElementsByClassName("boxImage");
+    var rightbox = document.getElementById('rightbox')
     var leftbox = document.getElementsByClassName('leftbox'); 
     var submitBtn = document.getElementById("submitBtn");
     var selectedImages= []
@@ -95,63 +126,82 @@ function doFirst(){
 
     for(var i = 0; i< leftbox.length; i++){
             
-            leftbox[i].addEventListener("dragenter",function(e){
-                        e.preventDefault(); 
-                        e.target.style.backgroundColor="white";
+            leftbox[i].addEventListener("dragenter",function(event){
+                        event.preventDefault(); 
+                       // event.target.style.backgroundColor="white";
                     },
                 false
             );
     
             leftbox[i].addEventListener("dragover", function(e){
                         e.preventDefault();
-                        e.target.style.backgroundColor="gray";
+                       // e.target.style.backgroundColor="gray";
                     },
                 false
             );
             
             leftbox[i].addEventListener("dragleave", function(e){
                 e.preventDefault();
-                    e.target.style.backgroundColor="white";
+    //                e.target.style.backgroundColor="white";
                     },
                 false
                 );
             
             leftbox[i].addEventListener('drop',dropped, false);
+            rightbox.addEventListener('drop',dropBack,false)
         
    }
 
     function startDrag(e){
         currentObject = e.target;
         }
-       
+    function dropBack(e){
+        e.preventDefault();
+        e.target.append(currentObject)
+    }   
     function dropped(evt){
+        var subtString= currentObject.src.substr(29);
         evt.target.style.backgroundColor="white";
         evt.preventDefault();
         for(var i =0; i<leftbox.length; i++){
-                
-            evt.target.innerHTML = " ";
-            evt.target.append(currentObject);
-            var subtString = currentObject.src.substr(29);
-            selectedImages.push(subtString);
-            //console.log("selectedImages are: "+selectedImages)
-            currentObject.removeEventListener("dragstart", startDrag, false);  
-        }    
+                    for(var j=0; j<boxImage.length; j++){
+                        if(evt.target==boxImage[j]&& boxImage[j].hasAttribute("src")){
+                            console.log("object detected");
+                            boxImage[j].src="./images/"+subtString;
+                            evt.target.innerHTML =" ";
+                            evt.target.append(currentObject);
+                        }else{
+                            evt.target.innerHTML =" ";
+                            evt.target.append(currentObject);
+                            console.log("object replaced");
+                        }
+                    }
+                    
+        }
+                 
+                selectedImages.push(subtString);
+                // these next lines for removing any duplicated values inside the array
+                [...new Set(selectedImages)];
+                selectedImages.filter((item,index)=> selectedImages.indexOf(item) === index);
+                selectedImages.reduce((unique,item)=>
+                unique.includes(item) ? unique : [...unique, item],[]);
+                currentObject.removeEventListener("dragstart", startDrag, false);  
+            
+        
+        
     }
     submitBtn.addEventListener("click",checkAnswer,false)
-    function checkAnswer(){   
-          
+    function checkAnswer(e){   
+               // nxtImages()
                 
                 for(var j=0; j<selectedImages.length; j++){
                         var n = selectedImages[j].endsWith("-wrong.png");
                     
                         if(n){
                             console.log("wrong Image captured");
-                        }else if(!n){
-                            
-                            console.log(selectedImages);
-                            console.log("the else if statement");
+                            break;
                         }else{
-                            console.log("the else statement");
+                            console.log("right Images Captured");
                         }
                     }       
             }
